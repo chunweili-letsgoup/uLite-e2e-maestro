@@ -1,0 +1,22 @@
+appId: ${APP_ID}
+name: "Invalid Staff PIN Is Rejected"
+tags: [android, phone, negative, staff]
+---
+- tapOn:
+    text: ${STAFF_A}
+    waitToSettleTimeoutMs: 300
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 5000
+- tapOn: { text: "${INVALID_PIN_1}", retryTapIfNoChange: false, waitToSettleTimeoutMs: 100 }
+- tapOn: { text: "${INVALID_PIN_2}", retryTapIfNoChange: false, waitToSettleTimeoutMs: 100 }
+- tapOn: { text: "${INVALID_PIN_3}", retryTapIfNoChange: false, waitToSettleTimeoutMs: 100 }
+- tapOn: { text: "${INVALID_PIN_4}", retryTapIfNoChange: false, waitToSettleTimeoutMs: 300 }
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 5000
+    label: "Reject invalid staff PIN"
+- back
+- extendedWaitUntil:
+    visible: ${STAFF_A}
+    timeout: 5000

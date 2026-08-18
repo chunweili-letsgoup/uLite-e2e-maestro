@@ -1,0 +1,32 @@
+appId: ${APP_ID}
+name: "Back from Passcode Returns to Staff Selection"
+tags: [android, phone, edge, staff]
+---
+- tapOn: ${STAFF_A}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 5000
+- tapOn: ${STAFF_A_PIN_1}
+- tapOn: ${STAFF_A_PIN_2}
+- tapOn: ${STAFF_A_PIN_3}
+- tapOn: ${STAFF_A_PIN_4}
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "Switch staff"
+    timeout: 5000
+- tapOn: "Switch staff"
+- extendedWaitUntil:
+    visible: ${STAFF_B}
+    timeout: 5000
+- tapOn: ${STAFF_B}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 5000
+- back
+- extendedWaitUntil:
+    visible: ${STAFF_A}
+    timeout: 5000
+    label: "Return from passcode to Staff Selection"

@@ -1,0 +1,43 @@
+appId: ${APP_ID}
+name: "Store Login and Switch Staff Happy Path"
+tags: [android, phone, e2e, happy-path, staff]
+---
+- tapOn: ${STAFF_A}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 5000
+- tapOn: ${STAFF_A_PIN_1}
+- tapOn: ${STAFF_A_PIN_2}
+- tapOn: ${STAFF_A_PIN_3}
+- tapOn: ${STAFF_A_PIN_4}
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "Switch staff"
+    timeout: 5000
+- tapOn: "Switch staff"
+- extendedWaitUntil:
+    visible: ${STAFF_B}
+    timeout: 5000
+- tapOn: ${STAFF_B}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 5000
+- tapOn: ${STAFF_B_PIN_1}
+- tapOn: ${STAFF_B_PIN_2}
+- tapOn: ${STAFF_B_PIN_3}
+- tapOn: ${STAFF_B_PIN_4}
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "Account"
+    timeout: 5000
+- tapOn: "Account"
+- extendedWaitUntil:
+    visible: ${STAFF_B_MARKER}
+    timeout: 5000
+    label: "Verify Staff B is the active account owner"

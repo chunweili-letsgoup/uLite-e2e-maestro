@@ -1,0 +1,30 @@
+appId: ${APP_ID}
+name: "Suite Setup - Login Once"
+tags: [android, phone, setup, staff]
+---
+- launchApp:
+    clearState: true
+    stopApp: true
+- extendedWaitUntil:
+    visible: "Email address"
+    timeout: 5000
+- tapOn:
+    text: "Email address"
+    index: 1
+    waitToSettleTimeoutMs: 300
+- inputText: ${STORE_EMAIL}
+- tapOn:
+    text: "Password"
+    index: 1
+    waitToSettleTimeoutMs: 300
+- inputText: ${STORE_PASSWORD}
+- hideKeyboard
+- tapOn:
+    text: "Log in"
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible: ${STAFF_A}
+    timeout: 5000
+- assertVisible:
+    text: ${STAFF_A}
+    label: "Login completed at Staff Selection"
