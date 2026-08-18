@@ -1,6 +1,6 @@
 appId: ${APP_ID}
 name: "Inactive Staff Is Excluded"
-tags: [android, phone, negative, staff]
+tags: [android, negative, staff]
 ---
 - assertNotVisible:
     text: ${INACTIVE_STAFF}

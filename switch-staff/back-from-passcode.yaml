@@ -1,6 +1,6 @@
 appId: ${APP_ID}
 name: "Back from Passcode Returns to Staff Selection"
-tags: [android, phone, edge, staff]
+tags: [android, edge, staff]
 ---
 - tapOn: ${STAFF_A}
 - extendedWaitUntil:
@@ -15,9 +15,9 @@ tags: [android, phone, edge, staff]
     timeout: 5000
 - tapOn: "Settings"
 - extendedWaitUntil:
-    visible: "Switch staff"
+    visible: "Switch staff|Switch Account"
     timeout: 5000
-- tapOn: "Switch staff"
+- tapOn: "Switch staff|Switch Account"
 - extendedWaitUntil:
     visible: ${STAFF_B}
     timeout: 5000

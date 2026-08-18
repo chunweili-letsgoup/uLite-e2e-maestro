@@ -1,6 +1,6 @@
 appId: ${APP_ID}
 name: "Suite Setup - Login Once"
-tags: [android, phone, setup, staff]
+tags: [android, setup, staff]
 ---
 - launchApp:
     clearState: true

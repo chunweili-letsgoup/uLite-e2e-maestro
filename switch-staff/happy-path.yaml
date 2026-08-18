@@ -1,6 +1,6 @@
 appId: ${APP_ID}
 name: "Store Login and Switch Staff Happy Path"
-tags: [android, phone, e2e, happy-path, staff]
+tags: [android, e2e, happy-path, staff]
 ---
 - tapOn: ${STAFF_A}
 - extendedWaitUntil:
@@ -15,9 +15,9 @@ tags: [android, phone, e2e, happy-path, staff]
     timeout: 5000
 - tapOn: "Settings"
 - extendedWaitUntil:
-    visible: "Switch staff"
+    visible: "Switch staff|Switch Account"
     timeout: 5000
-- tapOn: "Switch staff"
+- tapOn: "Switch staff|Switch Account"
 - extendedWaitUntil:
     visible: ${STAFF_B}
     timeout: 5000

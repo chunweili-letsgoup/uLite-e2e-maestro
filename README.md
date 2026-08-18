@@ -1,6 +1,6 @@
 # uLite E2E Maestro
 
-Local Maestro end-to-end UI automation for the uLite Android app. The current suite covers the Switch Staff behavior on an Android phone; tablet coverage will be added after the phone suite is verified.
+Local Maestro end-to-end UI automation for the uLite Android app. The Switch Staff suite runs on Android phones and tablets using the same behavior-focused flows.
 
 ## Requirements
 
@@ -13,7 +13,7 @@ Local Maestro end-to-end UI automation for the uLite Android app. The current su
 ## Run all Switch Staff tests
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-tests.ps1" -DeviceId "<ADB_DEVICE_ID>" -Test all -OpenReport
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-tests.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -Test all -OpenReport
 ```
 
 Find the current device ID with:
@@ -25,8 +25,16 @@ C:\platform-tools\adb.exe devices -l
 ## Run one test
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-tests.ps1" -DeviceId "<ADB_DEVICE_ID>" -Test invalid-pin -OpenReport
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-tests.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -Test invalid-pin -OpenReport
 ```
+
+## Run on an Android tablet
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-tests.ps1" -DeviceId "<TABLET_ADB_DEVICE_ID>" -DeviceType tablet -Test all -OpenReport
+```
+
+`DeviceType` labels the execution output. The same testcase files are reused because the current flows rely on shared visible text rather than phone-specific coordinates.
 
 Available test names:
 

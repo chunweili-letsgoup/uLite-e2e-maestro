@@ -1,6 +1,6 @@
 appId: ${APP_ID}
 name: "Relaunch During Switch Staff Returns to Staff Selection"
-tags: [android, phone, resilience, staff]
+tags: [android, resilience, staff]
 ---
 - tapOn: ${STAFF_A}
 - extendedWaitUntil:
@@ -15,9 +15,9 @@ tags: [android, phone, resilience, staff]
     timeout: 5000
 - tapOn: "Settings"
 - extendedWaitUntil:
-    visible: "Switch staff"
+    visible: "Switch staff|Switch Account"
     timeout: 5000
-- tapOn: "Switch staff"
+- tapOn: "Switch staff|Switch Account"
 - extendedWaitUntil:
     visible: ${STAFF_A}
     timeout: 5000

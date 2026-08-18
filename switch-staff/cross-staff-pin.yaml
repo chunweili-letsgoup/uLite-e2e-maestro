@@ -1,6 +1,6 @@
 appId: ${APP_ID}
 name: "Another Staff Member PIN Is Rejected"
-tags: [android, phone, negative, staff]
+tags: [android, negative, staff]
 ---
 - tapOn:
     text: ${STAFF_B}

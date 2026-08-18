@@ -3,6 +3,9 @@ param(
     [Parameter(Mandatory)]
     [string]$DeviceId,
 
+    [ValidateSet('phone', 'tablet')]
+    [string]$DeviceType = 'phone',
+
     [ValidateSet(
         'all',
         'invalid-pin',
@@ -21,6 +24,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $env:MAESTRO_CLI_NO_ANALYTICS = 'true'
+$env:JAVA_TOOL_OPTIONS = "-Duser.home=$PSScriptRoot"
 
 if ([string]::IsNullOrWhiteSpace($ConfigPath)) {
     $ConfigPath = Join-Path $PSScriptRoot 'config\stg.psd1'
@@ -111,7 +115,7 @@ foreach ($pinName in @('StaffAPin', 'StaffBPin', 'InvalidPin')) {
     }
 }
 
-Write-Host "[RUN ] $($selectedTests.Count) Switch Staff testcase(s) after one login" -ForegroundColor Cyan
+Write-Host "[RUN ] $($selectedTests.Count) Switch Staff testcase(s) on Android $DeviceType after one login" -ForegroundColor Cyan
 foreach ($testName in $selectedTests) {
     $ticket = $tickets[$testName]
     Write-Host "       $testName [$($ticket.Id)]"
@@ -132,10 +136,10 @@ $stopwatch.Stop()
 
 Write-Host ''
 if ($exitCode -eq 0) {
-    Write-Host '[PASS] Switch Staff test run completed.' -ForegroundColor Green
+    Write-Host "[PASS] Switch Staff test run completed on Android $DeviceType." -ForegroundColor Green
 }
 else {
-    Write-Host '[FAIL] One or more Switch Staff testcases failed.' -ForegroundColor Red
+    Write-Host "[FAIL] One or more Switch Staff testcases failed on Android $DeviceType." -ForegroundColor Red
 }
 Write-Host "Total execution time: $($stopwatch.Elapsed.ToString('hh\:mm\:ss\.fff'))"
 Write-Host "Report: $reportPath"
