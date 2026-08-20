@@ -75,6 +75,7 @@ foreach ($testName in $selectedTests) {
 
 $ticketPath = Join-Path $PSScriptRoot 'metadata\tickets.psd1'
 $tickets = Import-PowerShellDataFile -LiteralPath $ticketPath
+$deviceTickets = $tickets[$DeviceType]
 $reportRoot = Join-Path $PSScriptRoot 'reports'
 New-Item -ItemType Directory -Force -Path $reportRoot | Out-Null
 
@@ -117,8 +118,8 @@ foreach ($pinName in @('StaffAPin', 'StaffBPin', 'InvalidPin')) {
 
 Write-Host "[RUN ] $($selectedTests.Count) Switch Staff testcase(s) on Android $DeviceType after one login" -ForegroundColor Cyan
 foreach ($testName in $selectedTests) {
-    $ticket = $tickets[$testName]
-    Write-Host "       $testName [$($ticket.Id)]"
+    $ticket = $deviceTickets[$testName]
+    Write-Host "       $($ticket.Id) - $testName"
     Write-Host "       $($ticket.Url)"
 }
 

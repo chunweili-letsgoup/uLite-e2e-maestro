@@ -2,6 +2,9 @@ appId: ${APP_ID}
 name: "Inactive Staff Is Excluded"
 tags: [android, negative, staff]
 ---
+- assertVisible:
+    text: ${STAFF_A}
+    label: "Staff Selection is open"
 - assertNotVisible:
     text: ${INACTIVE_STAFF}
     label: "Exclude inactive staff from Staff Selection"
