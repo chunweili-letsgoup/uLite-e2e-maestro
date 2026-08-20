@@ -6,7 +6,12 @@ param(
     [ValidateSet('phone', 'tablet')]
     [string]$DeviceType = 'phone',
 
-    [ValidateSet('all', 'happy-path', 'account-selection-pin-gate')]
+    [ValidateSet(
+        'all',
+        'happy-path',
+        'switch-store-after-login-requires-merchant-pin',
+        'store-staff-cannot-access-switch-store'
+    )]
     [string]$Test = 'all',
 
     [string]$ConfigPath,
@@ -63,7 +68,8 @@ if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) {
 $config = Import-PowerShellDataFile -LiteralPath $ConfigPath
 $requiredKeys = @(
     'AppId', 'MerchantName', 'MerchantEmail', 'MerchantPassword',
-    'MerchantPin', 'InvalidPin', 'SwitchStoreA', 'SwitchStoreB', 'InactiveStore'
+    'MerchantPin', 'InvalidPin', 'SwitchStoreA', 'SwitchStoreB', 'InactiveStore',
+    'StoreEmail', 'StorePassword', 'StaffA', 'StaffAPin'
 )
 foreach ($key in $requiredKeys) {
     if (-not $config.ContainsKey($key) -or [string]::IsNullOrWhiteSpace([string]$config[$key])) {
@@ -76,10 +82,17 @@ if ([string]$config.MerchantPin -notmatch '^\d{4}$') {
 if ([string]$config.InvalidPin -notmatch '^\d{4}$') {
     throw 'InvalidPin must contain exactly four digits.'
 }
+if ([string]$config.StaffAPin -notmatch '^\d{4}$') {
+    throw 'StaffAPin must contain exactly four digits.'
+}
 
-$testOrder = @('happy-path', 'account-selection-pin-gate')
+$testOrder = @(
+    'happy-path',
+    'switch-store-after-login-requires-merchant-pin',
+    'store-staff-cannot-access-switch-store'
+)
 $selectedTests = if ($Test -eq 'all') { $testOrder } else { @($Test) }
-$flowRoot = Join-Path $PSScriptRoot 'switch-store'
+$flowRoot = Join-Path $PSScriptRoot 'android\switch-store'
 $flowPaths = foreach ($testName in $selectedTests) {
     $path = Join-Path $flowRoot "$testName.yaml"
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
@@ -118,7 +131,10 @@ $maestroEnvironment = @(
     '-e', "MERCHANT_PASSWORD=$($config.MerchantPassword)",
     '-e', "STORE_A=$($config.SwitchStoreA)",
     '-e', "STORE_B=$($config.SwitchStoreB)",
-    '-e', "INACTIVE_STORE=$($config.InactiveStore)"
+    '-e', "INACTIVE_STORE=$($config.InactiveStore)",
+    '-e', "STORE_EMAIL=$($config.StoreEmail)",
+    '-e', "STORE_PASSWORD=$($config.StorePassword)",
+    '-e', "STAFF_A=$($config.StaffA)"
 )
 $merchantPin = [string]$config.MerchantPin
 for ($index = 0; $index -lt 4; $index++) {
@@ -127,6 +143,10 @@ for ($index = 0; $index -lt 4; $index++) {
 $invalidPin = [string]$config.InvalidPin
 for ($index = 0; $index -lt 4; $index++) {
     $maestroEnvironment += @('-e', "INVALID_PIN_$($index + 1)=$($invalidPin.Substring($index, 1))")
+}
+$staffAPin = [string]$config.StaffAPin
+for ($index = 0; $index -lt 4; $index++) {
+    $maestroEnvironment += @('-e', "STAFF_A_PIN_$($index + 1)=$($staffAPin.Substring($index, 1))")
 }
 
 Write-Host "[RUN ] $($selectedTests.Count) Merchant Switch Store testcase(s) on Android $DeviceType" -ForegroundColor Cyan

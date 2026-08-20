@@ -1,46 +1,26 @@
 appId: ${APP_ID}
-name: "Account Selection Switch Store Requires Merchant PIN"
-tags: [android, authorization, negative, switch-store]
+name: "Switch Store After Login Requires Merchant PIN - iPhone"
+tags: [ios, iphone, authorization, negative, switch-store]
 ---
-- launchApp:
-    clearState: true
-    stopApp: true
-- extendedWaitUntil:
-    visible: "Email (address|or phone number)"
-    timeout: 5000
-- tapOn:
-    id: "login_email_field"
-    waitToSettleTimeoutMs: 300
-- inputText: ${MERCHANT_EMAIL}
-- tapOn:
-    id: "login_password_field"
-    waitToSettleTimeoutMs: 300
-- inputText: ${MERCHANT_PASSWORD}
-- hideKeyboard
-- tapOn:
-    text: "Log in"
-    waitToSettleTimeoutMs: 500
-- extendedWaitUntil:
-    visible: ${STORE_A}
-    timeout: 5000
+- runFlow: ../helpers/login-merchant-to-store-selection.yaml
 - tapOn: ${STORE_A}
 - extendedWaitUntil:
     visible: ${MERCHANT_NAME}
-    timeout: 5000
+    timeout: 15000
 - extendedWaitUntil:
     visible: "Switch store|Switch Store"
-    timeout: 5000
+    timeout: 15000
 - tapOn: "Switch store|Switch Store"
 - extendedWaitUntil:
     visible: "Enter passcode"
-    timeout: 5000
+    timeout: 15000
 - tapOn: ${INVALID_PIN_1}
 - tapOn: ${INVALID_PIN_2}
 - tapOn: ${INVALID_PIN_3}
 - tapOn: ${INVALID_PIN_4}
 - extendedWaitUntil:
     visible: "Enter passcode"
-    timeout: 5000
+    timeout: 15000
     label: "Invalid Merchant PIN does not open Store Selection"
 - tapOn: ${MERCHANT_PIN_1}
 - tapOn: ${MERCHANT_PIN_2}
@@ -48,7 +28,7 @@ tags: [android, authorization, negative, switch-store]
 - tapOn: ${MERCHANT_PIN_4}
 - extendedWaitUntil:
     visible: ${STORE_A}
-    timeout: 5000
+    timeout: 15000
     label: "Correct Merchant PIN opens Store Selection"
 - assertVisible:
     text: ${STORE_B}

@@ -45,15 +45,16 @@ foreach ($pinKey in @('StaffAPin', 'StaffBPin', 'InvalidPin', 'MerchantPin')) {
 }
 
 $flowPaths = @(
-    (Join-Path $PSScriptRoot 'helpers\login-to-staff-selection.yaml'),
-    (Join-Path $PSScriptRoot 'switch-staff\invalid-pin.yaml'),
-    (Join-Path $PSScriptRoot 'switch-staff\cross-staff-pin.yaml'),
-    (Join-Path $PSScriptRoot 'switch-staff\inactive-staff.yaml'),
-    (Join-Path $PSScriptRoot 'switch-staff\back-from-passcode.yaml'),
-    (Join-Path $PSScriptRoot 'switch-staff\relaunch-during-switch.yaml'),
-    (Join-Path $PSScriptRoot 'switch-staff\happy-path.yaml'),
-    (Join-Path $PSScriptRoot 'switch-store\happy-path.yaml'),
-    (Join-Path $PSScriptRoot 'switch-store\account-selection-pin-gate.yaml')
+    (Join-Path $PSScriptRoot 'android\helpers\login-to-staff-selection.yaml'),
+    (Join-Path $PSScriptRoot 'android\switch-staff\invalid-pin.yaml'),
+    (Join-Path $PSScriptRoot 'android\switch-staff\cross-staff-pin.yaml'),
+    (Join-Path $PSScriptRoot 'android\switch-staff\inactive-staff.yaml'),
+    (Join-Path $PSScriptRoot 'android\switch-staff\back-from-passcode.yaml'),
+    (Join-Path $PSScriptRoot 'android\switch-staff\relaunch-during-switch.yaml'),
+    (Join-Path $PSScriptRoot 'android\switch-staff\happy-path.yaml'),
+    (Join-Path $PSScriptRoot 'android\switch-store\happy-path.yaml'),
+    (Join-Path $PSScriptRoot 'android\switch-store\switch-store-after-login-requires-merchant-pin.yaml'),
+    (Join-Path $PSScriptRoot 'android\switch-store\store-staff-cannot-access-switch-store.yaml')
 )
 foreach ($flowPath in $flowPaths) {
     if (-not (Test-Path -LiteralPath $flowPath -PathType Leaf)) {
@@ -181,7 +182,7 @@ Write-Host "       Device: $deviceManufacturer $deviceModel (Android $androidVer
 Write-Host "       ADB ID: $DeviceId"
 Write-Host "       App: $($config.AppId) $appVersion (build $appVersionCode)"
 Write-Host '       Switch Staff: 6 testcases plus login setup'
-Write-Host '       Switch Store: 2 testcases'
+Write-Host '       Switch Store: 3 testcases'
 
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 & maestro --device $DeviceId test `

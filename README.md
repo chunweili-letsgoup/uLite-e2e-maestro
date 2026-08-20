@@ -54,10 +54,11 @@ Reports are generated locally in `reports/` using the format `YYYYMMDD_NNN.html`
 
 ```text
 config/stg.psd1                   Staging test data
-helpers/login-to-staff-selection.yaml
+android/helpers/login-to-staff-selection.yaml
 metadata/tickets.psd1            Linear ticket references
-switch-staff/*.yaml              One YAML file per testcase
-switch-store/*.yaml             Merchant Switch Store testcase flows
+android/switch-staff/*.yaml      Android Switch Staff testcase flows
+android/switch-store/*.yaml      Android Merchant Switch Store flows
+ios/switch-store/*.yaml          iPhone Merchant Switch Store flows
 run-tests.ps1                    Local PowerShell runner
 run-switch-store.ps1             Local Switch Store runner
 run-all-tests.ps1                Run every suite in one HTML report
@@ -71,10 +72,34 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-all-tests.ps1" -D
 
 ## Run the Merchant Switch Store tests
 
-Run both Android Switch Store cases in one report:
+Run all three Android Switch Store cases in one report:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-switch-store.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -OpenReport
 ```
 
-Run only one case with `-Test happy-path` or `-Test account-selection-pin-gate`.
+Run one case with `-Test happy-path`, `-Test switch-store-after-login-requires-merchant-pin`, or `-Test store-staff-cannot-access-switch-store`.
+
+## Run Merchant Switch Store tests on iPhone Simulator
+
+Install the staging Simulator `.app`, boot the target iPhone Simulator, and find its UDID:
+
+```bash
+xcrun simctl list devices booted
+```
+
+Run one independent iPhone case:
+
+```bash
+./run-switch-store-ios.sh --device "<SIMULATOR_UDID>" --test happy-path
+```
+
+Available iPhone cases:
+
+- `happy-path`
+- `switch-store-after-login-requires-merchant-pin`
+- `store-staff-cannot-access-switch-store`
+
+These match QA-2959, QA-2967, and the role-authorization coverage in QA-2941 under PRO-51.
+
+The iOS runner intentionally executes one case at a time. uLite stores authentication in Keychain, which Maestro `clearState` and app reinstallation do not clear. Independent repeat runs currently require a clean Simulator fixture until the staging app exposes a safe E2E reset mechanism.

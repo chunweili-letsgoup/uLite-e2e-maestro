@@ -1,0 +1,61 @@
+appId: ${APP_ID}
+name: "Merchant Switch Store Happy Path - iPhone"
+tags: [ios, iphone, e2e, happy-path, switch-store]
+---
+- runFlow: ../helpers/login-merchant-to-store-selection.yaml
+- assertVisible:
+    text: ${STORE_B}
+    label: "Store B is available to the Merchant"
+- assertNotVisible:
+    text: ${INACTIVE_STORE}
+    label: "Inactive Store is excluded from Store Selection"
+- tapOn: ${STORE_A}
+- extendedWaitUntil:
+    visible: ${MERCHANT_NAME}
+    timeout: 15000
+- tapOn: ${MERCHANT_NAME}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+- tapOn: ${MERCHANT_PIN_1}
+- tapOn: ${MERCHANT_PIN_2}
+- tapOn: ${MERCHANT_PIN_3}
+- tapOn: ${MERCHANT_PIN_4}
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 15000
+- tapOn: "Settings"
+- scrollUntilVisible:
+    element:
+      text: "Switch store|Switch Store"
+    direction: DOWN
+- tapOn: "Switch store|Switch Store"
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+- tapOn: ${MERCHANT_PIN_1}
+- tapOn: ${MERCHANT_PIN_2}
+- tapOn: ${MERCHANT_PIN_3}
+- tapOn: ${MERCHANT_PIN_4}
+- extendedWaitUntil:
+    visible: ${STORE_B}
+    timeout: 15000
+- tapOn: ${STORE_B}
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 15000
+    label: "Enter Store B directly after Merchant PIN verification"
+- launchApp:
+    clearState: false
+    stopApp: false
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 15000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: ${STORE_B}
+    timeout: 15000
+    label: "Store B is the active store"
+- assertVisible:
+    text: ${MERCHANT_NAME}
+    label: "Merchant remains the active account owner"

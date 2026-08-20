@@ -62,8 +62,8 @@ $testOrder = @(
     'happy-path'
 )
 $selectedTests = if ($Test -eq 'all') { $testOrder } else { @($Test) }
-$flowRoot = Join-Path $PSScriptRoot 'switch-staff'
-$setupFlow = Join-Path $PSScriptRoot 'helpers\login-to-staff-selection.yaml'
+$flowRoot = Join-Path $PSScriptRoot 'android\switch-staff'
+$setupFlow = Join-Path $PSScriptRoot 'android\helpers\login-to-staff-selection.yaml'
 $flowPaths = @($setupFlow)
 foreach ($testName in $selectedTests) {
     $flowPath = Join-Path $flowRoot "$testName.yaml"

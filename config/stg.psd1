@@ -1,5 +1,6 @@
 @{
     AppId             = 'com.letsgoup.uservego.staging'
+    IosAppId          = 'com.letsgoup.uServeGo.staging'
     StoreEmail        = 'chunweili+william-stg-store-001@letsgoup.tw'
     StorePassword     = 'Qaz1234567'
     StoreOwner        = 'william-stg-store-contact-001'
