@@ -23,11 +23,12 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $env:MAESTRO_CLI_NO_ANALYTICS = 'true'
-$env:JAVA_TOOL_OPTIONS = "-Duser.home=$PSScriptRoot"
+$env:JAVA_TOOL_OPTIONS = "-Duser.home=$RepoRoot"
 
 if ([string]::IsNullOrWhiteSpace($ConfigPath)) {
-    $ConfigPath = Join-Path $PSScriptRoot 'config\stg.psd1'
+    $ConfigPath = Join-Path $RepoRoot 'config\stg.psd1'
 }
 if (-not (Get-Command maestro -ErrorAction SilentlyContinue)) {
     throw 'Maestro was not found on PATH.'
@@ -62,8 +63,8 @@ $testOrder = @(
     'happy-path'
 )
 $selectedTests = if ($Test -eq 'all') { $testOrder } else { @($Test) }
-$flowRoot = Join-Path $PSScriptRoot 'android\switch-staff'
-$setupFlow = Join-Path $PSScriptRoot 'android\helpers\login-to-staff-selection.yaml'
+$flowRoot = Join-Path $RepoRoot 'android\switch-staff'
+$setupFlow = Join-Path $RepoRoot 'android\helpers\login-to-staff-selection.yaml'
 $flowPaths = @($setupFlow)
 foreach ($testName in $selectedTests) {
     $flowPath = Join-Path $flowRoot "$testName.yaml"
@@ -73,10 +74,10 @@ foreach ($testName in $selectedTests) {
     $flowPaths += $flowPath
 }
 
-$ticketPath = Join-Path $PSScriptRoot 'metadata\tickets.psd1'
+$ticketPath = Join-Path $RepoRoot 'metadata\tickets.psd1'
 $tickets = Import-PowerShellDataFile -LiteralPath $ticketPath
 $deviceTickets = $tickets[$DeviceType]
-$reportRoot = Join-Path $PSScriptRoot 'reports'
+$reportRoot = Join-Path $RepoRoot 'reports'
 New-Item -ItemType Directory -Force -Path $reportRoot | Out-Null
 
 $datePrefix = Get-Date -Format 'yyyyMMdd'

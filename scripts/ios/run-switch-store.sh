@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$repo_root"
+
 usage() {
   echo "Usage: $0 --device <SIMULATOR_UDID> --test <name> [--config <path>]" >&2
   exit 2

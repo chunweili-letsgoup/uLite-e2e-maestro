@@ -13,7 +13,7 @@ Local Maestro end-to-end UI automation for the uLite Android app. The Switch Sta
 ## Run all Switch Staff tests
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-tests.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -Test all -OpenReport
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\scripts\android\run-switch-staff.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -Test all -OpenReport
 ```
 
 Find the current device ID with:
@@ -25,13 +25,13 @@ C:\platform-tools\adb.exe devices -l
 ## Run one test
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-tests.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -Test invalid-pin -OpenReport
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\scripts\android\run-switch-staff.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -Test invalid-pin -OpenReport
 ```
 
 ## Run on an Android tablet
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-tests.ps1" -DeviceId "<TABLET_ADB_DEVICE_ID>" -DeviceType tablet -Test all -OpenReport
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\scripts\android\run-switch-staff.ps1" -DeviceId "<TABLET_ADB_DEVICE_ID>" -DeviceType tablet -Test all -OpenReport
 ```
 
 `DeviceType` labels the execution output. The same testcase files are reused because the current flows rely on shared visible text rather than phone-specific coordinates.
@@ -59,15 +59,16 @@ metadata/tickets.psd1            Linear ticket references
 android/switch-staff/*.yaml      Android Switch Staff testcase flows
 android/switch-store/*.yaml      Android Merchant Switch Store flows
 ios/switch-store/*.yaml          iPhone Merchant Switch Store flows
-run-tests.ps1                    Local PowerShell runner
-run-switch-store.ps1             Local Switch Store runner
-run-all-tests.ps1                Run every suite in one HTML report
+scripts/android/run-switch-staff.ps1
+scripts/android/run-switch-store.ps1
+scripts/android/run-all.ps1      Run every Android suite in one HTML report
+scripts/ios/run-switch-store.sh  Local iPhone Switch Store runner
 ```
 
 ## Run every Android suite in one report
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-all-tests.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -OpenReport
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\scripts\android\run-all.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -OpenReport
 ```
 
 ## Run the Merchant Switch Store tests
@@ -75,7 +76,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-all-tests.ps1" -D
 Run all three Android Switch Store cases in one report:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-switch-store.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -OpenReport
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\scripts\android\run-switch-store.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -OpenReport
 ```
 
 Run one case with `-Test happy-path`, `-Test switch-store-after-login-requires-merchant-pin`, or `-Test store-staff-cannot-access-switch-store`.
@@ -91,7 +92,7 @@ xcrun simctl list devices booted
 Run one independent iPhone case:
 
 ```bash
-./run-switch-store-ios.sh --device "<SIMULATOR_UDID>" --test happy-path
+./scripts/ios/run-switch-store.sh --device "<SIMULATOR_UDID>" --test happy-path
 ```
 
 Available iPhone cases:

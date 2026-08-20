@@ -12,11 +12,12 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $env:MAESTRO_CLI_NO_ANALYTICS = 'true'
-$env:JAVA_TOOL_OPTIONS = "-Duser.home=$PSScriptRoot"
+$env:JAVA_TOOL_OPTIONS = "-Duser.home=$RepoRoot"
 
 if ([string]::IsNullOrWhiteSpace($ConfigPath)) {
-    $ConfigPath = Join-Path $PSScriptRoot 'config\stg.psd1'
+    $ConfigPath = Join-Path $RepoRoot 'config\stg.psd1'
 }
 if (-not (Get-Command maestro -ErrorAction SilentlyContinue)) {
     throw 'Maestro was not found on PATH.'
@@ -45,16 +46,16 @@ foreach ($pinKey in @('StaffAPin', 'StaffBPin', 'InvalidPin', 'MerchantPin')) {
 }
 
 $flowPaths = @(
-    (Join-Path $PSScriptRoot 'android\helpers\login-to-staff-selection.yaml'),
-    (Join-Path $PSScriptRoot 'android\switch-staff\invalid-pin.yaml'),
-    (Join-Path $PSScriptRoot 'android\switch-staff\cross-staff-pin.yaml'),
-    (Join-Path $PSScriptRoot 'android\switch-staff\inactive-staff.yaml'),
-    (Join-Path $PSScriptRoot 'android\switch-staff\back-from-passcode.yaml'),
-    (Join-Path $PSScriptRoot 'android\switch-staff\relaunch-during-switch.yaml'),
-    (Join-Path $PSScriptRoot 'android\switch-staff\happy-path.yaml'),
-    (Join-Path $PSScriptRoot 'android\switch-store\happy-path.yaml'),
-    (Join-Path $PSScriptRoot 'android\switch-store\switch-store-after-login-requires-merchant-pin.yaml'),
-    (Join-Path $PSScriptRoot 'android\switch-store\store-staff-cannot-access-switch-store.yaml')
+    (Join-Path $RepoRoot 'android\helpers\login-to-staff-selection.yaml'),
+    (Join-Path $RepoRoot 'android\switch-staff\invalid-pin.yaml'),
+    (Join-Path $RepoRoot 'android\switch-staff\cross-staff-pin.yaml'),
+    (Join-Path $RepoRoot 'android\switch-staff\inactive-staff.yaml'),
+    (Join-Path $RepoRoot 'android\switch-staff\back-from-passcode.yaml'),
+    (Join-Path $RepoRoot 'android\switch-staff\relaunch-during-switch.yaml'),
+    (Join-Path $RepoRoot 'android\switch-staff\happy-path.yaml'),
+    (Join-Path $RepoRoot 'android\switch-store\happy-path.yaml'),
+    (Join-Path $RepoRoot 'android\switch-store\switch-store-after-login-requires-merchant-pin.yaml'),
+    (Join-Path $RepoRoot 'android\switch-store\store-staff-cannot-access-switch-store.yaml')
 )
 foreach ($flowPath in $flowPaths) {
     if (-not (Test-Path -LiteralPath $flowPath -PathType Leaf)) {
@@ -129,7 +130,7 @@ if (Test-Path -LiteralPath $adbPath -PathType Leaf) {
     }
 }
 
-$reportRoot = Join-Path $PSScriptRoot 'reports'
+$reportRoot = Join-Path $RepoRoot 'reports'
 New-Item -ItemType Directory -Force -Path $reportRoot | Out-Null
 $datePrefix = Get-Date -Format 'yyyyMMdd'
 $highestCounter = 0

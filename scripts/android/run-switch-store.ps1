@@ -20,8 +20,9 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $env:MAESTRO_CLI_NO_ANALYTICS = 'true'
-$env:JAVA_TOOL_OPTIONS = "-Duser.home=$PSScriptRoot"
+$env:JAVA_TOOL_OPTIONS = "-Duser.home=$RepoRoot"
 
 $adbCommand = Get-Command adb -ErrorAction SilentlyContinue
 if (-not $adbCommand) {
@@ -56,7 +57,7 @@ if ($DeviceId -notin $connectedDeviceIds) {
 & $adbPath -s $DeviceId shell svc power stayon usb 2>$null | Out-Null
 
 if ([string]::IsNullOrWhiteSpace($ConfigPath)) {
-    $ConfigPath = Join-Path $PSScriptRoot 'config\stg.psd1'
+    $ConfigPath = Join-Path $RepoRoot 'config\stg.psd1'
 }
 if (-not (Get-Command maestro -ErrorAction SilentlyContinue)) {
     throw 'Maestro was not found on PATH.'
@@ -92,7 +93,7 @@ $testOrder = @(
     'store-staff-cannot-access-switch-store'
 )
 $selectedTests = if ($Test -eq 'all') { $testOrder } else { @($Test) }
-$flowRoot = Join-Path $PSScriptRoot 'android\switch-store'
+$flowRoot = Join-Path $RepoRoot 'android\switch-store'
 $flowPaths = foreach ($testName in $selectedTests) {
     $path = Join-Path $flowRoot "$testName.yaml"
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
@@ -100,14 +101,14 @@ $flowPaths = foreach ($testName in $selectedTests) {
     }
     $path
 }
-$ticketPath = Join-Path $PSScriptRoot 'metadata\tickets.psd1'
+$ticketPath = Join-Path $RepoRoot 'metadata\tickets.psd1'
 $tickets = Import-PowerShellDataFile -LiteralPath $ticketPath
 $ticketGroupName = if ($DeviceType -eq 'tablet') { 'switchStoreTablet' } else { 'switchStorePhone' }
 $deviceTickets = $tickets[$ticketGroupName]
 if (-not $deviceTickets) {
     throw "Switch Store ticket mapping not found for Android $DeviceType."
 }
-$reportRoot = Join-Path $PSScriptRoot 'reports'
+$reportRoot = Join-Path $RepoRoot 'reports'
 New-Item -ItemType Directory -Force -Path $reportRoot | Out-Null
 
 $datePrefix = Get-Date -Format 'yyyyMMdd'
