@@ -18,6 +18,38 @@ $ErrorActionPreference = 'Stop'
 $env:MAESTRO_CLI_NO_ANALYTICS = 'true'
 $env:JAVA_TOOL_OPTIONS = "-Duser.home=$PSScriptRoot"
 
+$adbCommand = Get-Command adb -ErrorAction SilentlyContinue
+if (-not $adbCommand) {
+    $platformToolsPath = 'C:\platform-tools'
+    $fallbackAdbPath = Join-Path $platformToolsPath 'adb.exe'
+    if (-not (Test-Path -LiteralPath $fallbackAdbPath -PathType Leaf)) {
+        throw 'ADB was not found on PATH or at C:\platform-tools\adb.exe.'
+    }
+    $env:Path = "$platformToolsPath;$env:Path"
+    $adbPath = $fallbackAdbPath
+}
+else {
+    $adbPath = $adbCommand.Source
+}
+
+$connectedDeviceIds = @(
+    & $adbPath devices 2>$null |
+        Select-Object -Skip 1 |
+        ForEach-Object {
+            if ($_ -match '^([^\s]+)\s+device(?:\s|$)') { $Matches[1] }
+        }
+)
+if ($DeviceId -notin $connectedDeviceIds) {
+    $detected = if ($connectedDeviceIds.Count) { $connectedDeviceIds -join ', ' } else { 'none' }
+    throw "Android device '$DeviceId' is not connected and authorized. Detected devices: $detected"
+}
+
+# Keep the connected test device awake and dismiss a non-secure keyguard.
+& $adbPath -s $DeviceId shell input keyevent KEYCODE_WAKEUP 2>$null | Out-Null
+& $adbPath -s $DeviceId shell wm dismiss-keyguard 2>$null | Out-Null
+& $adbPath -s $DeviceId shell input keyevent 82 2>$null | Out-Null
+& $adbPath -s $DeviceId shell svc power stayon usb 2>$null | Out-Null
+
 if ([string]::IsNullOrWhiteSpace($ConfigPath)) {
     $ConfigPath = Join-Path $PSScriptRoot 'config\stg.psd1'
 }
@@ -54,6 +86,13 @@ $flowPaths = foreach ($testName in $selectedTests) {
         throw "Testcase file not found: $path"
     }
     $path
+}
+$ticketPath = Join-Path $PSScriptRoot 'metadata\tickets.psd1'
+$tickets = Import-PowerShellDataFile -LiteralPath $ticketPath
+$ticketGroupName = if ($DeviceType -eq 'tablet') { 'switchStoreTablet' } else { 'switchStorePhone' }
+$deviceTickets = $tickets[$ticketGroupName]
+if (-not $deviceTickets) {
+    throw "Switch Store ticket mapping not found for Android $DeviceType."
 }
 $reportRoot = Join-Path $PSScriptRoot 'reports'
 New-Item -ItemType Directory -Force -Path $reportRoot | Out-Null
@@ -92,7 +131,9 @@ for ($index = 0; $index -lt 4; $index++) {
 
 Write-Host "[RUN ] $($selectedTests.Count) Merchant Switch Store testcase(s) on Android $DeviceType" -ForegroundColor Cyan
 foreach ($testName in $selectedTests) {
-    Write-Host "       $testName"
+    $ticket = $deviceTickets[$testName]
+    Write-Host "       $($ticket.Id) - $testName"
+    Write-Host "       $($ticket.Url)"
 }
 Write-Host "       $($config.SwitchStoreA) -> $($config.SwitchStoreB)"
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()

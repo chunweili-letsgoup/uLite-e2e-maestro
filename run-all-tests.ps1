@@ -62,7 +62,34 @@ foreach ($flowPath in $flowPaths) {
 }
 
 $adbCommand = Get-Command adb -ErrorAction SilentlyContinue
-$adbPath = if ($adbCommand) { $adbCommand.Source } else { 'C:\platform-tools\adb.exe' }
+if ($adbCommand) {
+    $adbPath = $adbCommand.Source
+}
+else {
+    $platformToolsPath = 'C:\platform-tools'
+    $adbPath = Join-Path $platformToolsPath 'adb.exe'
+    if (-not (Test-Path -LiteralPath $adbPath -PathType Leaf)) {
+        throw 'ADB was not found on PATH or at C:\platform-tools\adb.exe.'
+    }
+    $env:Path = "$platformToolsPath;$env:Path"
+}
+
+$connectedDeviceIds = @(
+    & $adbPath devices 2>$null |
+        Select-Object -Skip 1 |
+        ForEach-Object {
+            if ($_ -match '^([^\s]+)\s+device(?:\s|$)') { $Matches[1] }
+        }
+)
+if ($DeviceId -notin $connectedDeviceIds) {
+    $detected = if ($connectedDeviceIds.Count) { $connectedDeviceIds -join ', ' } else { 'none' }
+    throw "Android device '$DeviceId' is not connected and authorized. Detected devices: $detected"
+}
+
+& $adbPath -s $DeviceId shell input keyevent KEYCODE_WAKEUP 2>$null | Out-Null
+& $adbPath -s $DeviceId shell wm dismiss-keyguard 2>$null | Out-Null
+& $adbPath -s $DeviceId shell input keyevent 82 2>$null | Out-Null
+& $adbPath -s $DeviceId shell svc power stayon usb 2>$null | Out-Null
 
 function Get-AndroidProperty {
     param([Parameter(Mandatory)][string]$PropertyName)

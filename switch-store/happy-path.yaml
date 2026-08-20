@@ -6,7 +6,7 @@ tags: [android, e2e, happy-path, switch-store]
     clearState: true
     stopApp: true
 - extendedWaitUntil:
-    visible: "Email or phone number"
+    visible: "Email (address|or phone number)"
     timeout: 5000
 - tapOn:
     id: "login_email_field"

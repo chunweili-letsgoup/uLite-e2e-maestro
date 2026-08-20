@@ -61,4 +61,14 @@
             Url = 'https://linear.app/letsgoup-tw/issue/QA-2967/qa-authorization-account-selection-switch-store-requires-merchant-pin'
         }
     }
+    switchStoreTablet = @{
+        'happy-path' = @{
+            Id  = 'QA-2969'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2969/qa-happy-path-merchant-switch-store-android-tablet'
+        }
+        'account-selection-pin-gate' = @{
+            Id  = 'QA-2968'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2968/qa-authorization-account-selection-switch-store-requires-merchant-pin'
+        }
+    }
 }
