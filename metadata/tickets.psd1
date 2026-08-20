@@ -74,5 +74,9 @@
             Id  = 'QA-2968'
             Url = 'https://linear.app/letsgoup-tw/issue/QA-2968/qa-authorization-account-selection-switch-store-requires-merchant-pin'
         }
+        'store-staff-cannot-access-switch-store' = @{
+            Id  = 'QA-2973'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2973/qa-authorization-store-staff-cannot-access-switch-store-android-tablet'
+        }
     }
 }
