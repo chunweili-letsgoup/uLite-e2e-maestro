@@ -1,0 +1,84 @@
+appId: ${APP_ID}
+name: "Merchant Switch Store Happy Path"
+tags: [android, e2e, happy-path, switch-store]
+---
+- launchApp:
+    clearState: true
+    stopApp: true
+- extendedWaitUntil:
+    visible: "Email or phone number"
+    timeout: 5000
+- tapOn:
+    id: "login_email_field"
+    waitToSettleTimeoutMs: 300
+- inputText: ${MERCHANT_EMAIL}
+- tapOn:
+    id: "login_password_field"
+    waitToSettleTimeoutMs: 300
+- inputText: ${MERCHANT_PASSWORD}
+- hideKeyboard
+- tapOn:
+    text: "Log in"
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible: ${STORE_A}
+    timeout: 5000
+- assertVisible:
+    text: ${STORE_B}
+    label: "Store B is available to the Merchant"
+- assertNotVisible:
+    text: ${INACTIVE_STORE}
+    label: "Inactive Store is excluded from Store Selection"
+- tapOn: ${STORE_A}
+- extendedWaitUntil:
+    visible: ${MERCHANT_NAME}
+    timeout: 5000
+- tapOn: ${MERCHANT_NAME}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 5000
+- tapOn: ${MERCHANT_PIN_1}
+- tapOn: ${MERCHANT_PIN_2}
+- tapOn: ${MERCHANT_PIN_3}
+- tapOn: ${MERCHANT_PIN_4}
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "Switch store|Switch Store"
+    timeout: 5000
+- tapOn: "Switch store|Switch Store"
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 5000
+- tapOn: ${MERCHANT_PIN_1}
+- tapOn: ${MERCHANT_PIN_2}
+- tapOn: ${MERCHANT_PIN_3}
+- tapOn: ${MERCHANT_PIN_4}
+- extendedWaitUntil:
+    visible: ${STORE_B}
+    timeout: 5000
+- tapOn: ${STORE_B}
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 5000
+    label: "Enter Store B directly after Merchant PIN verification"
+- launchApp:
+    clearState: false
+    stopApp: false
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "Account"
+    timeout: 5000
+- tapOn: "Account"
+- extendedWaitUntil:
+    visible: ${STORE_B}
+    timeout: 5000
+    label: "Store B is the active store"
+- assertVisible:
+    text: ${MERCHANT_NAME}
+    label: "Merchant remains the active account owner"

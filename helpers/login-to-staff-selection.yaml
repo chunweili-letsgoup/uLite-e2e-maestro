@@ -6,16 +6,14 @@ tags: [android, setup, staff]
     clearState: true
     stopApp: true
 - extendedWaitUntil:
-    visible: "Email address"
+    visible: "Email or phone number"
     timeout: 5000
 - tapOn:
-    text: "Email address"
-    index: 1
+    id: "login_email_field"
     waitToSettleTimeoutMs: 300
 - inputText: ${STORE_EMAIL}
 - tapOn:
-    text: "Password"
-    index: 1
+    id: "login_password_field"
     waitToSettleTimeoutMs: 300
 - inputText: ${STORE_PASSWORD}
 - hideKeyboard

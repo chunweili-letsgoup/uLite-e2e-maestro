@@ -17,4 +17,18 @@
     StaffAMarker      = 'william-stg-staff-001'
     StaffBMarker      = 'william-stg-staff-002'
     StoreMarker       = 'william-stg-store-001'
+
+    # Merchant-level fixtures for the Switch Store suite.
+    MerchantName      = 'william-stg-merchant-003'
+    MerchantEmail     = 'chunweili+william-stg-merchant-003@letsgoup.tw'
+    MerchantPassword  = 'Qaz1234567'
+    MerchantPin       = '3197'
+    SwitchStoreA      = 'william-stg-store-006'
+    SwitchStoreAEmail = 'chunweili+william-stg-store-006@letsgoup.tw'
+    SwitchStoreAPin   = '3626'
+    SwitchStoreB      = 'william-stg-store-007'
+    InactiveStore     = 'william-stg-store-008'
+    InactiveStoreEmail = 'chunweili+william-stg-store-008@letsgoup.tw'
+    InactiveStorePassword = 'Qaz1234567'
+    InactiveStorePin  = '6137'
 }

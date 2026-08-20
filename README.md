@@ -57,5 +57,24 @@ config/stg.psd1                   Staging test data
 helpers/login-to-staff-selection.yaml
 metadata/tickets.psd1            Linear ticket references
 switch-staff/*.yaml              One YAML file per testcase
+switch-store/*.yaml             Merchant Switch Store testcase flows
 run-tests.ps1                    Local PowerShell runner
+run-switch-store.ps1             Local Switch Store runner
+run-all-tests.ps1                Run every suite in one HTML report
 ```
+
+## Run every Android suite in one report
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-all-tests.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -OpenReport
+```
+
+## Run the Merchant Switch Store tests
+
+Run both Android Switch Store cases in one report:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\run-switch-store.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -OpenReport
+```
+
+Run only one case with `-Test happy-path` or `-Test account-selection-pin-gate`.

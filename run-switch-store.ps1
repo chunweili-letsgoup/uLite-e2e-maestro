@@ -1,0 +1,125 @@
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory)]
+    [string]$DeviceId,
+
+    [ValidateSet('phone', 'tablet')]
+    [string]$DeviceType = 'phone',
+
+    [ValidateSet('all', 'happy-path', 'account-selection-pin-gate')]
+    [string]$Test = 'all',
+
+    [string]$ConfigPath,
+
+    [switch]$OpenReport
+)
+
+$ErrorActionPreference = 'Stop'
+$env:MAESTRO_CLI_NO_ANALYTICS = 'true'
+$env:JAVA_TOOL_OPTIONS = "-Duser.home=$PSScriptRoot"
+
+if ([string]::IsNullOrWhiteSpace($ConfigPath)) {
+    $ConfigPath = Join-Path $PSScriptRoot 'config\stg.psd1'
+}
+if (-not (Get-Command maestro -ErrorAction SilentlyContinue)) {
+    throw 'Maestro was not found on PATH.'
+}
+if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) {
+    throw "Config file not found: $ConfigPath"
+}
+
+$config = Import-PowerShellDataFile -LiteralPath $ConfigPath
+$requiredKeys = @(
+    'AppId', 'MerchantName', 'MerchantEmail', 'MerchantPassword',
+    'MerchantPin', 'InvalidPin', 'SwitchStoreA', 'SwitchStoreB', 'InactiveStore'
+)
+foreach ($key in $requiredKeys) {
+    if (-not $config.ContainsKey($key) -or [string]::IsNullOrWhiteSpace([string]$config[$key])) {
+        throw "Missing required Switch Store config value: $key"
+    }
+}
+if ([string]$config.MerchantPin -notmatch '^\d{4}$') {
+    throw 'MerchantPin must contain exactly four digits.'
+}
+if ([string]$config.InvalidPin -notmatch '^\d{4}$') {
+    throw 'InvalidPin must contain exactly four digits.'
+}
+
+$testOrder = @('happy-path', 'account-selection-pin-gate')
+$selectedTests = if ($Test -eq 'all') { $testOrder } else { @($Test) }
+$flowRoot = Join-Path $PSScriptRoot 'switch-store'
+$flowPaths = foreach ($testName in $selectedTests) {
+    $path = Join-Path $flowRoot "$testName.yaml"
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
+        throw "Testcase file not found: $path"
+    }
+    $path
+}
+$reportRoot = Join-Path $PSScriptRoot 'reports'
+New-Item -ItemType Directory -Force -Path $reportRoot | Out-Null
+
+$datePrefix = Get-Date -Format 'yyyyMMdd'
+$highestCounter = 0
+Get-ChildItem -LiteralPath $reportRoot -Filter "$datePrefix`_*.html" -File | ForEach-Object {
+    if ($_.BaseName -match "^$datePrefix`_(\d{3})$") {
+        $counter = [int]$Matches[1]
+        if ($counter -gt $highestCounter) {
+            $highestCounter = $counter
+        }
+    }
+}
+$runId = '{0}_{1:D3}' -f $datePrefix, ($highestCounter + 1)
+$reportPath = Join-Path $reportRoot "$runId.html"
+$artifactPath = Join-Path $reportRoot "$runId-artifacts"
+
+$maestroEnvironment = @(
+    '-e', "APP_ID=$($config.AppId)",
+    '-e', "MERCHANT_NAME=$($config.MerchantName)",
+    '-e', "MERCHANT_EMAIL=$($config.MerchantEmail)",
+    '-e', "MERCHANT_PASSWORD=$($config.MerchantPassword)",
+    '-e', "STORE_A=$($config.SwitchStoreA)",
+    '-e', "STORE_B=$($config.SwitchStoreB)",
+    '-e', "INACTIVE_STORE=$($config.InactiveStore)"
+)
+$merchantPin = [string]$config.MerchantPin
+for ($index = 0; $index -lt 4; $index++) {
+    $maestroEnvironment += @('-e', "MERCHANT_PIN_$($index + 1)=$($merchantPin.Substring($index, 1))")
+}
+$invalidPin = [string]$config.InvalidPin
+for ($index = 0; $index -lt 4; $index++) {
+    $maestroEnvironment += @('-e', "INVALID_PIN_$($index + 1)=$($invalidPin.Substring($index, 1))")
+}
+
+Write-Host "[RUN ] $($selectedTests.Count) Merchant Switch Store testcase(s) on Android $DeviceType" -ForegroundColor Cyan
+foreach ($testName in $selectedTests) {
+    Write-Host "       $testName"
+}
+Write-Host "       $($config.SwitchStoreA) -> $($config.SwitchStoreB)"
+$stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+& maestro --device $DeviceId test `
+    --no-ansi `
+    --no-reinstall-driver `
+    --format HTML-DETAILED `
+    --output $reportPath `
+    --test-output-dir $artifactPath `
+    @maestroEnvironment `
+    @flowPaths
+$exitCode = $LASTEXITCODE
+$stopwatch.Stop()
+
+Write-Host ''
+if ($exitCode -eq 0) {
+    Write-Host "[PASS] Merchant Switch Store test run completed on Android $DeviceType." -ForegroundColor Green
+}
+else {
+    Write-Host "[FAIL] One or more Merchant Switch Store testcases failed on Android $DeviceType." -ForegroundColor Red
+}
+Write-Host "Total execution time: $($stopwatch.Elapsed.ToString('hh\:mm\:ss\.fff'))"
+Write-Host "Report: $reportPath"
+Write-Host "Artifacts: $artifactPath"
+
+if ($OpenReport -and (Test-Path -LiteralPath $reportPath -PathType Leaf)) {
+    Start-Process -FilePath $reportPath
+}
+
+exit $exitCode
