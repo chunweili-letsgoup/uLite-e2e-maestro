@@ -51,6 +51,32 @@
             Url = 'https://linear.app/letsgoup-tw/issue/QA-2955'
         }
     }
+    switchStaffIphone = @{
+        'happy-path' = @{
+            Id  = 'QA-2931'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2931/qa-e2e-happy-path-store-login-and-switch-staff-ios-phone'
+        }
+        'invalid-pin' = @{
+            Id  = 'QA-2974'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2974/qa-negative-invalid-staff-pin-is-rejected-iphone'
+        }
+        'cross-staff-pin' = @{
+            Id  = 'QA-2975'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2975/qa-negative-another-staff-members-pin-is-rejected-iphone'
+        }
+        'back-from-passcode' = @{
+            Id  = 'QA-2976'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2976/qa-edge-back-from-staff-passcode-returns-to-staff-selection-iphone'
+        }
+        'inactive-staff' = @{
+            Id  = 'QA-2978'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2978/qa-negative-inactive-staff-is-excluded-from-staff-selection-iphone'
+        }
+        'relaunch-during-switch' = @{
+            Id  = 'QA-2977'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2977/qa-resilience-relaunch-during-switch-staff-returns-to-staff-selection'
+        }
+    }
     switchStorePhone = @{
         'happy-path' = @{
             Id  = 'QA-2959'

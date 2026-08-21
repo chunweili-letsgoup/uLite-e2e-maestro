@@ -1,0 +1,18 @@
+appId: ${APP_ID}
+name: "Back from Staff Passcode Returns to Staff Selection - iPhone"
+tags: [ios, iphone, edge, staff]
+---
+- runFlow: ../helpers/open-switch-staff-as-staff-a.yaml
+- tapOn: ${STAFF_B}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+- tapOn:
+    text: "^Back$"
+- extendedWaitUntil:
+    visible: ${STAFF_A}
+    timeout: 15000
+    label: "Back returns safely to Staff Selection"
+- assertVisible:
+    text: ${STAFF_B}
+    label: "Staff B is not authenticated"

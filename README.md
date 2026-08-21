@@ -63,6 +63,7 @@ scripts/android/run-switch-staff.ps1
 scripts/android/run-switch-store.ps1
 scripts/android/run-all.ps1      Run every Android suite in one HTML report
 scripts/ios/run-switch-store.sh  Local iPhone Switch Store runner
+scripts/ios/run-switch-staff.sh  Local iPhone Switch Staff runner
 ```
 
 ## Run every Android suite in one report
@@ -104,3 +105,20 @@ Available iPhone cases:
 These match QA-2959, QA-2967, and the role-authorization coverage in QA-2941 under PRO-51.
 
 The iOS runner intentionally executes one case at a time. uLite stores authentication in Keychain, which Maestro `clearState` and app reinstallation do not clear. Independent repeat runs currently require a clean Simulator fixture until the staging app exposes a safe E2E reset mechanism.
+
+## Run Switch Staff tests on iPhone Simulator
+
+Run one independent iPhone case:
+
+```bash
+./scripts/ios/run-switch-staff.sh --device "<SIMULATOR_UDID>" --test happy-path
+```
+
+Available iPhone cases:
+
+- `happy-path`
+- `invalid-pin`
+- `cross-staff-pin`
+- `back-from-passcode`
+- `inactive-staff`
+- `relaunch-during-switch`

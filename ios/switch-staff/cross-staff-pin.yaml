@@ -1,0 +1,20 @@
+appId: ${APP_ID}
+name: "Another Staff Member PIN Is Rejected - iPhone"
+tags: [ios, iphone, negative, staff]
+---
+- runFlow: ../helpers/login-store-to-staff-selection.yaml
+- tapOn: ${STAFF_B}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+- tapOn: ${STAFF_A_PIN_1}
+- tapOn: ${STAFF_A_PIN_2}
+- tapOn: ${STAFF_A_PIN_3}
+- tapOn: ${STAFF_A_PIN_4}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+    label: "Staff A PIN cannot authenticate Staff B"
+- assertNotVisible:
+    text: "Settings"
+    label: "Staff B is not activated"

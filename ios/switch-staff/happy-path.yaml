@@ -1,0 +1,24 @@
+appId: ${APP_ID}
+name: "Store Login and Switch Staff Happy Path - iPhone"
+tags: [ios, iphone, e2e, happy-path, staff]
+---
+- runFlow: ../helpers/open-switch-staff-as-staff-a.yaml
+- tapOn: ${STAFF_B}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+- tapOn: ${STAFF_B_PIN_1}
+- tapOn: ${STAFF_B_PIN_2}
+- tapOn: ${STAFF_B_PIN_3}
+- tapOn: ${STAFF_B_PIN_4}
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 15000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: ${STAFF_B_MARKER}
+    timeout: 15000
+    label: "Staff B becomes the active account"
+- assertVisible:
+    text: ${STORE_MARKER}
+    label: "Store context remains unchanged"
