@@ -1,6 +1,6 @@
 @{
     phone = @{
-        'happy-path' = @{
+        'login-and-switch-between-active-staff' = @{
             Id  = 'QA-2933'
             Url = 'https://linear.app/letsgoup-tw/issue/QA-2933'
         }
@@ -26,7 +26,7 @@
         }
     }
     tablet = @{
-        'happy-path' = @{
+        'login-and-switch-between-active-staff' = @{
             Id  = 'QA-2950'
             Url = 'https://linear.app/letsgoup-tw/issue/QA-2950'
         }
@@ -78,7 +78,7 @@
         }
     }
     switchStorePhone = @{
-        'happy-path' = @{
+        'merchant-switches-between-linked-stores' = @{
             Id  = 'QA-2959'
             Url = 'https://linear.app/letsgoup-tw/issue/QA-2959/qa-happy-path-merchant-switch-store-android-phone'
         }
@@ -120,7 +120,7 @@
         }
     }
     switchStoreTablet = @{
-        'happy-path' = @{
+        'merchant-switches-between-linked-stores' = @{
             Id  = 'QA-2969'
             Url = 'https://linear.app/letsgoup-tw/issue/QA-2969/qa-happy-path-merchant-switch-store-android-tablet'
         }
@@ -131,6 +131,20 @@
         'store-staff-cannot-access-switch-store' = @{
             Id  = 'QA-2973'
             Url = 'https://linear.app/letsgoup-tw/issue/QA-2973/qa-authorization-store-staff-cannot-access-switch-store-android-tablet'
+        }
+    }
+    staffPhoneLoginAuthorization = @{
+        'role-user-cannot-login-to-app' = @{
+            Id  = 'QA-2979'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2979/qa-automation-role-user-cannot-login-to-app-android'
+        }
+        'role-owner-can-login-with-phone-number' = @{
+            Id  = 'QA-2980'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2980/qa-automation-role-owner-can-login-via-phone-number-android'
+        }
+        'role-admin-can-login-with-phone-number' = @{
+            Id  = 'QA-2981'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2981/qa-automation-role-admin-can-login-via-phone-number-android'
         }
     }
 }

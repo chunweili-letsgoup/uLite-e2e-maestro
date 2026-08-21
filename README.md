@@ -43,7 +43,7 @@ Available test names:
 - `inactive-staff`
 - `back-from-passcode`
 - `relaunch-during-switch`
-- `happy-path`
+- `login-and-switch-between-active-staff`
 - `all`
 
 ## Reports
@@ -58,6 +58,7 @@ android/helpers/login-to-staff-selection.yaml
 metadata/tickets.psd1            Linear ticket references
 android/switch-staff/*.yaml      Android Switch Staff testcase flows
 android/switch-store/*.yaml      Android Merchant Switch Store flows
+android/staff-phone-login/*.yaml Android staff phone-number login flows
 ios/switch-store/*.yaml          iPhone Merchant Switch Store flows
 scripts/android/run-switch-staff.ps1
 scripts/android/run-switch-store.ps1
@@ -80,7 +81,7 @@ Run all three Android Switch Store cases in one report:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\scripts\android\run-switch-store.ps1" -DeviceId "<ADB_DEVICE_ID>" -DeviceType phone -OpenReport
 ```
 
-Run one case with `-Test happy-path`, `-Test switch-store-after-login-requires-merchant-pin`, or `-Test store-staff-cannot-access-switch-store`.
+Run one case with `-Test merchant-switches-between-linked-stores`, `-Test switch-store-after-login-requires-merchant-pin`, or `-Test store-staff-cannot-access-switch-store`.
 
 ## Run Merchant Switch Store tests on iPhone Simulator
 

@@ -1,0 +1,45 @@
+appId: ${APP_ID}
+name: "Role Admin Can Login with Phone Number"
+tags: [android, authentication, staff-phone-login, happy-path, authorization]
+---
+- launchApp:
+    clearState: true
+    stopApp: true
+- extendedWaitUntil:
+    visible: "Email (address|or phone number)"
+    timeout: 5000
+- tapOn:
+    id: "login_email_field"
+    waitToSettleTimeoutMs: 300
+- inputText: ${ADMIN_ROLE_PHONE}
+- tapOn:
+    id: "login_password_field"
+    waitToSettleTimeoutMs: 300
+- inputText: ${ADMIN_ROLE_PASSWORD}
+- hideKeyboard
+- tapOn:
+    text: "Log in"
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible: ${ADMIN_ROLE_NAME}
+    timeout: 5000
+- tapOn:
+    text: ${ADMIN_ROLE_NAME}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 5000
+- tapOn: ${ADMIN_ROLE_PIN_1}
+- tapOn: ${ADMIN_ROLE_PIN_2}
+- tapOn: ${ADMIN_ROLE_PIN_3}
+- tapOn: ${ADMIN_ROLE_PIN_4}
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "Account"
+    timeout: 5000
+- tapOn: "Account"
+- assertVisible:
+    text: ${ADMIN_ROLE_NAME}
+    label: "Role ADMIN logged in with phone number"

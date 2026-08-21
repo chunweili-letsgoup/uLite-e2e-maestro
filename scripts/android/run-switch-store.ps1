@@ -8,7 +8,7 @@ param(
 
     [ValidateSet(
         'all',
-        'happy-path',
+        'merchant-switches-between-linked-stores',
         'switch-store-after-login-requires-merchant-pin',
         'store-staff-cannot-access-switch-store'
     )]
@@ -88,7 +88,7 @@ if ([string]$config.StaffAPin -notmatch '^\d{4}$') {
 }
 
 $testOrder = @(
-    'happy-path',
+    'merchant-switches-between-linked-stores',
     'switch-store-after-login-requires-merchant-pin',
     'store-staff-cannot-access-switch-store'
 )

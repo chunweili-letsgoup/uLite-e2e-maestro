@@ -29,7 +29,11 @@ if (-not (Test-Path -LiteralPath $ConfigPath -PathType Leaf)) {
 $config = Import-PowerShellDataFile -LiteralPath $ConfigPath
 $requiredKeys = @(
     'AppId', 'StoreEmail', 'StorePassword', 'StoreOwner',
-    'StaffA', 'StaffAPin', 'StaffB', 'StaffBPin', 'StaffBMarker',
+    'StaffA', 'StaffAPin', 'StoreOwnerPin',
+    'UserRolePhone', 'UserRolePassword',
+    'OwnerRolePhone', 'OwnerRolePassword',
+    'AdminRoleName', 'AdminRolePhone', 'AdminRolePassword', 'AdminRolePin',
+    'StaffB', 'StaffBPin', 'StaffBMarker',
     'InactiveStaff', 'InvalidPin',
     'MerchantName', 'MerchantEmail', 'MerchantPassword', 'MerchantPin',
     'SwitchStoreA', 'SwitchStoreB', 'InactiveStore'
@@ -39,7 +43,10 @@ foreach ($key in $requiredKeys) {
         throw "Missing required config value: $key"
     }
 }
-foreach ($pinKey in @('StaffAPin', 'StaffBPin', 'InvalidPin', 'MerchantPin')) {
+foreach ($pinKey in @(
+    'StaffAPin', 'StaffBPin', 'InvalidPin', 'MerchantPin',
+    'StoreOwnerPin', 'AdminRolePin'
+)) {
     if ([string]$config[$pinKey] -notmatch '^\d{4}$') {
         throw "$pinKey must contain exactly four digits."
     }
@@ -52,10 +59,13 @@ $flowPaths = @(
     (Join-Path $RepoRoot 'android\switch-staff\inactive-staff.yaml'),
     (Join-Path $RepoRoot 'android\switch-staff\back-from-passcode.yaml'),
     (Join-Path $RepoRoot 'android\switch-staff\relaunch-during-switch.yaml'),
-    (Join-Path $RepoRoot 'android\switch-staff\happy-path.yaml'),
-    (Join-Path $RepoRoot 'android\switch-store\happy-path.yaml'),
+    (Join-Path $RepoRoot 'android\switch-staff\login-and-switch-between-active-staff.yaml'),
+    (Join-Path $RepoRoot 'android\switch-store\merchant-switches-between-linked-stores.yaml'),
     (Join-Path $RepoRoot 'android\switch-store\switch-store-after-login-requires-merchant-pin.yaml'),
-    (Join-Path $RepoRoot 'android\switch-store\store-staff-cannot-access-switch-store.yaml')
+    (Join-Path $RepoRoot 'android\switch-store\store-staff-cannot-access-switch-store.yaml'),
+    (Join-Path $RepoRoot 'android\staff-phone-login\role-user-cannot-login-to-app.yaml'),
+    (Join-Path $RepoRoot 'android\staff-phone-login\role-owner-can-login-with-phone-number.yaml'),
+    (Join-Path $RepoRoot 'android\staff-phone-login\role-admin-can-login-with-phone-number.yaml')
 )
 foreach ($flowPath in $flowPaths) {
     if (-not (Test-Path -LiteralPath $flowPath -PathType Leaf)) {
@@ -152,6 +162,13 @@ $maestroEnvironment = @(
     '-e', "STORE_PASSWORD=$($config.StorePassword)",
     '-e', "STORE_OWNER=$($config.StoreOwner)",
     '-e', "STAFF_A=$($config.StaffA)",
+    '-e', "USER_ROLE_PHONE=$($config.UserRolePhone)",
+    '-e', "USER_ROLE_PASSWORD=$($config.UserRolePassword)",
+    '-e', "OWNER_ROLE_PHONE=$($config.OwnerRolePhone)",
+    '-e', "OWNER_ROLE_PASSWORD=$($config.OwnerRolePassword)",
+    '-e', "ADMIN_ROLE_NAME=$($config.AdminRoleName)",
+    '-e', "ADMIN_ROLE_PHONE=$($config.AdminRolePhone)",
+    '-e', "ADMIN_ROLE_PASSWORD=$($config.AdminRolePassword)",
     '-e', "STAFF_B=$($config.StaffB)",
     '-e', "INACTIVE_STAFF=$($config.InactiveStaff)",
     '-e', "STAFF_B_MARKER=$($config.StaffBMarker)",
@@ -167,7 +184,9 @@ $pinDefinitions = @(
     @{ Name = 'STAFF_A_PIN'; Value = [string]$config.StaffAPin },
     @{ Name = 'STAFF_B_PIN'; Value = [string]$config.StaffBPin },
     @{ Name = 'INVALID_PIN'; Value = [string]$config.InvalidPin },
-    @{ Name = 'MERCHANT_PIN'; Value = [string]$config.MerchantPin }
+    @{ Name = 'MERCHANT_PIN'; Value = [string]$config.MerchantPin },
+    @{ Name = 'STORE_OWNER_PIN'; Value = [string]$config.StoreOwnerPin },
+    @{ Name = 'ADMIN_ROLE_PIN'; Value = [string]$config.AdminRolePin }
 )
 foreach ($pinDefinition in $pinDefinitions) {
     for ($index = 0; $index -lt 4; $index++) {
@@ -184,6 +203,7 @@ Write-Host "       ADB ID: $DeviceId"
 Write-Host "       App: $($config.AppId) $appVersion (build $appVersionCode)"
 Write-Host '       Switch Staff: 6 testcases plus login setup'
 Write-Host '       Switch Store: 3 testcases'
+Write-Host '       Staff Phone Login Authorization: 3 testcases'
 
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 & maestro --device $DeviceId test `
@@ -245,7 +265,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const suites = [
     { name: 'Switch Staff', tag: '>staff<' },
-    { name: 'Switch Store', tag: '>switch-store<' }
+    { name: 'Switch Store', tag: '>switch-store<' },
+    { name: 'Staff Phone Login', tag: '>staff-phone-login<' }
   ];
 
   for (const suite of suites) {

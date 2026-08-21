@@ -1,0 +1,25 @@
+appId: ${APP_ID}
+name: "Role User Cannot Login to App"
+tags: [android, authentication, staff-phone-login, negative, authorization]
+---
+- launchApp:
+    clearState: true
+    stopApp: true
+- extendedWaitUntil:
+    visible: "Email (address|or phone number)"
+    timeout: 5000
+- tapOn:
+    id: "login_email_field"
+    waitToSettleTimeoutMs: 300
+- inputText: ${USER_ROLE_PHONE}
+- tapOn:
+    id: "login_password_field"
+    waitToSettleTimeoutMs: 300
+- inputText: ${USER_ROLE_PASSWORD}
+- hideKeyboard
+- tapOn:
+    text: "Log in"
+    waitToSettleTimeoutMs: 500
+- assertVisible:
+    text: "Activation is not allowed"
+    label: "Role USER is rejected from App login"

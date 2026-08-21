@@ -1,0 +1,44 @@
+appId: ${APP_ID}
+name: "Role Owner Can Login with Phone Number"
+tags: [android, authentication, staff-phone-login, happy-path, authorization]
+---
+- launchApp:
+    clearState: true
+    stopApp: true
+- extendedWaitUntil:
+    visible: "Email (address|or phone number)"
+    timeout: 5000
+- tapOn:
+    id: "login_email_field"
+    waitToSettleTimeoutMs: 300
+- inputText: ${OWNER_ROLE_PHONE}
+- tapOn:
+    id: "login_password_field"
+    waitToSettleTimeoutMs: 300
+- inputText: ${OWNER_ROLE_PASSWORD}
+- hideKeyboard
+- tapOn:
+    text: "Log in"
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible: ${STORE_OWNER}
+    timeout: 5000
+- tapOn: ${STORE_OWNER}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 5000
+- tapOn: ${STORE_OWNER_PIN_1}
+- tapOn: ${STORE_OWNER_PIN_2}
+- tapOn: ${STORE_OWNER_PIN_3}
+- tapOn: ${STORE_OWNER_PIN_4}
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: "Account"
+    timeout: 5000
+- tapOn: "Account"
+- assertVisible:
+    text: ${STORE_OWNER}
+    label: "Role OWNER logged in with phone number"

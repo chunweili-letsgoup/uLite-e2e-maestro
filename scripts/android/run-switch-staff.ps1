@@ -13,7 +13,7 @@ param(
         'inactive-staff',
         'back-from-passcode',
         'relaunch-during-switch',
-        'happy-path'
+        'login-and-switch-between-active-staff'
     )]
     [string]$Test = 'all',
 
@@ -60,7 +60,7 @@ $testOrder = @(
     'inactive-staff',
     'back-from-passcode',
     'relaunch-during-switch',
-    'happy-path'
+    'login-and-switch-between-active-staff'
 )
 $selectedTests = if ($Test -eq 'all') { $testOrder } else { @($Test) }
 $flowRoot = Join-Path $RepoRoot 'android\switch-staff'

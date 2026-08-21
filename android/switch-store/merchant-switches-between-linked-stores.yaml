@@ -1,5 +1,5 @@
 appId: ${APP_ID}
-name: "Merchant Switch Store Happy Path"
+name: "Merchant Switches Between Linked Stores"
 tags: [android, e2e, happy-path, switch-store]
 ---
 - launchApp:

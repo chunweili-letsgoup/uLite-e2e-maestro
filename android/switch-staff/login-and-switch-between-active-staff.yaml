@@ -1,5 +1,5 @@
 appId: ${APP_ID}
-name: "Store Login and Switch Staff Happy Path"
+name: "Login and Switch Between Active Staff"
 tags: [android, e2e, happy-path, staff]
 ---
 - tapOn: ${STAFF_A}
