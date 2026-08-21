@@ -77,6 +77,32 @@
             Url = 'https://linear.app/letsgoup-tw/issue/QA-2977/qa-resilience-relaunch-during-switch-staff-returns-to-staff-selection'
         }
     }
+    switchStaffIpad = @{
+        'happy-path' = @{
+            Id  = 'QA-2932'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2932/qa-happy-path-store-login-then-switch-from-staff-a-to-staff-b-ipad'
+        }
+        'invalid-pin' = @{
+            Id  = 'QA-2984'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2984/qa-negative-invalid-staff-pin-is-rejected-ipad'
+        }
+        'cross-staff-pin' = @{
+            Id  = 'QA-2985'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2985/qa-negative-staff-b-rejects-staff-as-pin-ipad'
+        }
+        'back-from-passcode' = @{
+            Id  = 'QA-2986'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2986/qa-edge-back-from-staff-b-passcode-returns-to-staff-selection-ipad'
+        }
+        'inactive-staff' = @{
+            Id  = 'QA-2987'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2987/qa-negative-inactive-staff-is-hidden-before-and-after-switch-user-ipad'
+        }
+        'relaunch-during-switch' = @{
+            Id  = 'QA-2988'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2988/qa-resilience-relaunch-during-switch-user-returns-to-staff-selection'
+        }
+    }
     switchStorePhone = @{
         'merchant-switches-between-linked-stores' = @{
             Id  = 'QA-2959'

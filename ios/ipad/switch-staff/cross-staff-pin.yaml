@@ -1,0 +1,29 @@
+appId: ${APP_ID}
+name: "Staff B Login Rejects Staff A's PIN - iPad"
+tags: [ios, ipad, tablet, negative, staff]
+---
+- setOrientation: LANDSCAPE_LEFT
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: "(Don.t Allow|不允許)"
+    timeout: 15000
+- tapOn:
+    point: "41%,53%"
+- runFlow: ../helpers/login-store-to-staff-selection.yaml
+- tapOn: ${STAFF_B}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+- tapOn: ${STAFF_A_PIN_1}
+- tapOn: ${STAFF_A_PIN_2}
+- tapOn: ${STAFF_A_PIN_3}
+- tapOn: ${STAFF_A_PIN_4}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+    label: "Staff A PIN cannot authenticate Staff B"
+- assertNotVisible:
+    text: "Settings|gearshape.fill"
+    label: "Staff B is not activated"

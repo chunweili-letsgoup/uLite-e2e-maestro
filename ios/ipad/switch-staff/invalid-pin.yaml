@@ -1,0 +1,29 @@
+appId: ${APP_ID}
+name: "Staff Login Rejects an Invalid PIN - iPad"
+tags: [ios, ipad, tablet, negative, staff]
+---
+- setOrientation: LANDSCAPE_LEFT
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: "(Don.t Allow|不允許)"
+    timeout: 15000
+- tapOn:
+    point: "41%,53%"
+- runFlow: ../helpers/login-store-to-staff-selection.yaml
+- tapOn: ${STAFF_A}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+- tapOn: ${INVALID_PIN_1}
+- tapOn: ${INVALID_PIN_2}
+- tapOn: ${INVALID_PIN_3}
+- tapOn: ${INVALID_PIN_4}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+    label: "Invalid PIN does not authenticate Staff A"
+- assertNotVisible:
+    text: "Settings|gearshape.fill"
+    label: "No staff session is created"

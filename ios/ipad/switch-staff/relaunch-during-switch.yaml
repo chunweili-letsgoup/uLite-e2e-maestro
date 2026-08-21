@@ -1,0 +1,37 @@
+appId: ${APP_ID}
+name: "Relaunch During Switch User Returns to Staff Selection - iPad"
+tags: [ios, ipad, tablet, resilience, staff]
+---
+- setOrientation: LANDSCAPE_LEFT
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: "(Don.t Allow|不允許)"
+    timeout: 15000
+- tapOn:
+    point: "41%,53%"
+- runFlow: ../helpers/open-switch-staff-as-staff-a.yaml
+- killApp
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: ${STAFF_A}
+    timeout: 15000
+    label: "Relaunch from Staff Selection restores a safe state"
+- tapOn: ${STAFF_B}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+- killApp
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: ${STAFF_A}
+    timeout: 15000
+    label: "Relaunch from Staff B passcode restores Staff Selection"
+- assertVisible:
+    text: ${STAFF_B}
+    label: "Staff B is not activated without its PIN"

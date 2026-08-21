@@ -5,24 +5,27 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$repo_root"
 
 usage() {
-  echo "Usage: $0 --device <SIMULATOR_UDID> --test <name> [--config <path>]" >&2
+  echo "Usage: $0 --device <SIMULATOR_UDID> --test <name> [--platform <iphone|ipad>] [--config <path>]" >&2
   exit 2
 }
 
 device_id=""
 test_name=""
 config_path="config/stg.psd1"
+platform="iphone"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --device) device_id="${2:-}"; shift 2 ;;
     --test) test_name="${2:-}"; shift 2 ;;
+    --platform) platform="${2:-}"; shift 2 ;;
     --config) config_path="${2:-}"; shift 2 ;;
     *) usage ;;
   esac
 done
 
 [[ -n "$device_id" && -n "$test_name" ]] || usage
+[[ "$platform" == "iphone" || "$platform" == "ipad" ]] || usage
 
 case "$test_name" in
   happy-path|invalid-pin|cross-staff-pin|back-from-passcode|inactive-staff|relaunch-during-switch) ;;
@@ -64,10 +67,14 @@ done
 xcrun simctl list devices booted | grep -Fq "$device_id" || { echo "Simulator is not booted: $device_id" >&2; exit 1; }
 xcrun simctl get_app_container "$device_id" "$app_id" app >/dev/null 2>&1 || { echo "uLite is not installed on Simulator $device_id ($app_id)." >&2; exit 1; }
 
-flow_path="ios/switch-staff/$test_name.yaml"
+if [[ "$platform" == "ipad" ]]; then
+  flow_path="ios/ipad/switch-staff/$test_name.yaml"
+else
+  flow_path="ios/switch-staff/$test_name.yaml"
+fi
 report_dir="reports/ios"
 mkdir -p "$report_dir"
-run_id="$(date '+%Y%m%d_%H%M%S')-switch-staff-$test_name"
+run_id="$(date '+%Y%m%d_%H%M%S')-$platform-switch-staff-$test_name"
 
 env_args=(
   -e "APP_ID=$app_id"

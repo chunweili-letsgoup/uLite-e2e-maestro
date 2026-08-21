@@ -1,0 +1,33 @@
+appId: ${APP_ID}
+name: "Store Login, Then Switch from Staff A to Staff B - iPad"
+tags: [ios, ipad, tablet, e2e, happy-path, staff]
+---
+- setOrientation: LANDSCAPE_LEFT
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: "(Don.t Allow|不允許)"
+    timeout: 15000
+- tapOn:
+    point: "41%,53%"
+- runFlow: ../helpers/open-switch-staff-as-staff-a.yaml
+- tapOn: ${STAFF_B}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+- tapOn: ${STAFF_B_PIN_1}
+- tapOn: ${STAFF_B_PIN_2}
+- tapOn: ${STAFF_B_PIN_3}
+- tapOn: ${STAFF_B_PIN_4}
+- extendedWaitUntil:
+    visible: "Settings|gearshape.fill"
+    timeout: 15000
+- tapOn: "Settings|gearshape.fill"
+- extendedWaitUntil:
+    visible: ${STAFF_B_MARKER}
+    timeout: 15000
+    label: "Staff B becomes the active account"
+- assertVisible:
+    text: ${STORE_MARKER}
+    label: "Store context remains unchanged"

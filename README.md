@@ -141,3 +141,22 @@ Available iPhone cases:
 - `back-from-passcode`
 - `inactive-staff`
 - `relaunch-during-switch`
+
+## Run Switch Staff tests on iPad Simulator
+
+Run one independent iPad case in landscape:
+
+```bash
+./scripts/ios/run-switch-staff.sh --device "<SIMULATOR_UDID>" --platform ipad --test happy-path
+```
+
+The iPad suite implements the same six objectives as iPhone:
+
+- `happy-path`
+- `invalid-pin`
+- `cross-staff-pin`
+- `back-from-passcode`
+- `inactive-staff`
+- `relaunch-during-switch`
+
+These map to QA-2932 and QA-2984 through QA-2988 under QA-1866.
