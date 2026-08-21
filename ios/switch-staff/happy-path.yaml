@@ -1,5 +1,5 @@
 appId: ${APP_ID}
-name: "Store Login and Switch Staff Happy Path - iPhone"
+name: "Store Login, Then Switch from Staff A to Staff B - iPhone"
 tags: [ios, iphone, e2e, happy-path, staff]
 ---
 - runFlow: ../helpers/open-switch-staff-as-staff-a.yaml

@@ -91,6 +91,34 @@
             Url = 'https://linear.app/letsgoup-tw/issue/QA-2941/qa-authorization-store-staff-cannot-access-switch-store-android-phone'
         }
     }
+    switchStoreIphone = @{
+        'happy-path' = @{
+            Id  = 'QA-2970'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2970/qa-happy-path-merchant-switch-store-iphone'
+        }
+        'switch-store-after-login-requires-merchant-pin' = @{
+            Id  = 'QA-2971'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2971/qa-authorization-switch-store-after-login-requires-merchant-pin-iphone'
+        }
+        'store-staff-cannot-access-switch-store' = @{
+            Id  = 'QA-2972'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2972/qa-authorization-store-staff-cannot-access-switch-store-iphone'
+        }
+    }
+    switchStoreIpad = @{
+        'happy-path' = @{
+            Id  = 'QA-2925'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2925/qa-happy-path-merchant-switch-store-ipad'
+        }
+        'switch-store-after-login-requires-merchant-pin' = @{
+            Id  = 'QA-2982'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2982/qa-authorization-switch-store-requires-merchant-pin-ipad'
+        }
+        'store-staff-cannot-access-switch-store' = @{
+            Id  = 'QA-2983'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2983/qa-authorization-store-staff-cannot-access-switch-store-ipad'
+        }
+    }
     switchStoreTablet = @{
         'happy-path' = @{
             Id  = 'QA-2969'

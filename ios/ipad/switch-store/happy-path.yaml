@@ -1,7 +1,16 @@
 appId: ${APP_ID}
-name: "Merchant Login to Store A, Then Switch to Store B - iPhone"
-tags: [ios, iphone, e2e, happy-path, switch-store]
+name: "Merchant Login to Store A, Then Switch to Store B - iPad"
+tags: [ios, ipad, tablet, e2e, happy-path, switch-store]
 ---
+- setOrientation: LANDSCAPE_LEFT
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: "(Don.t Allow|不允許)"
+    timeout: 15000
+- tapOn:
+    point: "41%,53%"
 - runFlow: ../helpers/login-merchant-to-store-selection.yaml
 - assertVisible:
     text: ${STORE_B}
@@ -22,9 +31,9 @@ tags: [ios, iphone, e2e, happy-path, switch-store]
 - tapOn: ${MERCHANT_PIN_3}
 - tapOn: ${MERCHANT_PIN_4}
 - extendedWaitUntil:
-    visible: "Settings"
+    visible: "Settings|gearshape.fill"
     timeout: 15000
-- tapOn: "Settings"
+- tapOn: "Settings|gearshape.fill"
 - scrollUntilVisible:
     element:
       text: "Switch store|Switch Store"
@@ -42,16 +51,16 @@ tags: [ios, iphone, e2e, happy-path, switch-store]
     timeout: 15000
 - tapOn: ${STORE_B}
 - extendedWaitUntil:
-    visible: "Settings"
+    visible: "Settings|gearshape.fill"
     timeout: 15000
     label: "Enter Store B directly after Merchant PIN verification"
 - launchApp:
     clearState: false
     stopApp: false
 - extendedWaitUntil:
-    visible: "Settings"
+    visible: "Settings|gearshape.fill"
     timeout: 15000
-- tapOn: "Settings"
+- tapOn: "Settings|gearshape.fill"
 - extendedWaitUntil:
     visible: ${STORE_B}
     timeout: 15000

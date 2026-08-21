@@ -1,5 +1,5 @@
 appId: ${APP_ID}
-name: "Another Staff Member PIN Is Rejected - iPhone"
+name: "Staff B Login Rejects Staff A's PIN - iPhone"
 tags: [ios, iphone, negative, staff]
 ---
 - runFlow: ../helpers/login-store-to-staff-selection.yaml

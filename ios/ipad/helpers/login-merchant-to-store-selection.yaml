@@ -1,0 +1,26 @@
+appId: ${APP_ID}
+name: "iPad Setup - Merchant Login to Store Selection"
+---
+- tapOn:
+    text: "(Don.t Allow|不允許)"
+    optional: true
+- extendedWaitUntil:
+    visible: "Email or phone number"
+    timeout: 15000
+- tapOn:
+    text: "Email or phone number"
+    waitToSettleTimeoutMs: 300
+- inputText: ${MERCHANT_EMAIL}
+- tapOn:
+    text: "Password"
+    index: 2
+    waitToSettleTimeoutMs: 300
+- inputText: ${MERCHANT_PASSWORD}
+- pressKey: ENTER
+- tapOn:
+    text: "Login|Log in"
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible: ${STORE_A}
+    timeout: 15000
+    label: "Merchant login routes to Store Selection"

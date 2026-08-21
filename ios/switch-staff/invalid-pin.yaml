@@ -1,5 +1,5 @@
 appId: ${APP_ID}
-name: "Invalid Staff PIN Is Rejected - iPhone"
+name: "Staff Login Rejects an Invalid PIN - iPhone"
 tags: [ios, iphone, negative, staff]
 ---
 - runFlow: ../helpers/login-store-to-staff-selection.yaml

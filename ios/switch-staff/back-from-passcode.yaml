@@ -1,5 +1,5 @@
 appId: ${APP_ID}
-name: "Back from Staff Passcode Returns to Staff Selection - iPhone"
+name: "Back from Staff B Passcode Returns to Staff Selection - iPhone"
 tags: [ios, iphone, edge, staff]
 ---
 - runFlow: ../helpers/open-switch-staff-as-staff-a.yaml

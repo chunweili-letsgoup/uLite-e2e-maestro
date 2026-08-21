@@ -1,5 +1,5 @@
 appId: ${APP_ID}
-name: "Inactive Staff Is Excluded from Staff Selection - iPhone"
+name: "Inactive Staff Is Hidden Before and After Switch User - iPhone"
 tags: [ios, iphone, negative, staff]
 ---
 - runFlow: ../helpers/login-store-to-staff-selection.yaml

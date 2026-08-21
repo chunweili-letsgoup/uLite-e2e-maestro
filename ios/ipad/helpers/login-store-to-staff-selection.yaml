@@ -1,0 +1,26 @@
+appId: ${APP_ID}
+name: "iPad Setup - Store Login to Staff Selection"
+---
+- tapOn:
+    text: "(Don.t Allow|不允許)"
+    optional: true
+- extendedWaitUntil:
+    visible: "Email or phone number"
+    timeout: 15000
+- tapOn:
+    text: "Email or phone number"
+    waitToSettleTimeoutMs: 300
+- inputText: ${STORE_EMAIL}
+- tapOn:
+    text: "Password"
+    index: 2
+    waitToSettleTimeoutMs: 300
+- inputText: ${STORE_PASSWORD}
+- pressKey: ENTER
+- tapOn:
+    text: "Login|Log in"
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible: ${STAFF_A}
+    timeout: 15000
+    label: "Store login routes to Staff Selection"

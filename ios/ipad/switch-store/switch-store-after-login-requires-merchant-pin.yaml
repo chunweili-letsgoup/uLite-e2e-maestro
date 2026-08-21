@@ -1,7 +1,16 @@
 appId: ${APP_ID}
-name: "Switch Store Rejects Invalid Merchant PIN and Accepts Valid PIN - iPhone"
-tags: [ios, iphone, authorization, negative, switch-store]
+name: "Switch Store Rejects Invalid Merchant PIN and Accepts Valid PIN - iPad"
+tags: [ios, ipad, tablet, authorization, negative, switch-store]
 ---
+- setOrientation: LANDSCAPE_LEFT
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: "(Don.t Allow|不允許)"
+    timeout: 15000
+- tapOn:
+    point: "41%,53%"
 - runFlow: ../helpers/login-merchant-to-store-selection.yaml
 - tapOn: ${STORE_A}
 - extendedWaitUntil:

@@ -1,7 +1,16 @@
 appId: ${APP_ID}
-name: "Store Staff Settings Do Not Show Switch Store - iPhone"
-tags: [ios, iphone, authorization, negative, switch-store, staff]
+name: "Store Staff Settings Do Not Show Switch Store - iPad"
+tags: [ios, ipad, tablet, authorization, negative, switch-store, staff]
 ---
+- setOrientation: LANDSCAPE_LEFT
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: "(Don.t Allow|不允許)"
+    timeout: 15000
+- tapOn:
+    point: "41%,53%"
 - runFlow: ../helpers/login-store-to-staff-selection.yaml
 - tapOn: ${STAFF_A}
 - extendedWaitUntil:
@@ -12,9 +21,9 @@ tags: [ios, iphone, authorization, negative, switch-store, staff]
 - tapOn: ${STAFF_A_PIN_3}
 - tapOn: ${STAFF_A_PIN_4}
 - extendedWaitUntil:
-    visible: "Settings"
+    visible: "Settings|gearshape.fill"
     timeout: 15000
-- tapOn: "Settings"
+- tapOn: "Settings|gearshape.fill"
 - swipe:
     direction: UP
     duration: 500

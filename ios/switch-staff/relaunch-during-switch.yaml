@@ -1,5 +1,5 @@
 appId: ${APP_ID}
-name: "Relaunch During Switch Staff Returns to Staff Selection - iPhone"
+name: "Relaunch During Switch User Returns to Staff Selection - iPhone"
 tags: [ios, iphone, resilience, staff]
 ---
 - runFlow: ../helpers/open-switch-staff-as-staff-a.yaml

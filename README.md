@@ -102,9 +102,27 @@ Available iPhone cases:
 - `switch-store-after-login-requires-merchant-pin`
 - `store-staff-cannot-access-switch-store`
 
-These match QA-2959, QA-2967, and the role-authorization coverage in QA-2941 under PRO-51.
+These match QA-2970, QA-2971, and QA-2972 under PRO-51.
 
 The iOS runner intentionally executes one case at a time. uLite stores authentication in Keychain, which Maestro `clearState` and app reinstallation do not clear. Independent repeat runs currently require a clean Simulator fixture until the staging app exposes a safe E2E reset mechanism.
+
+## Run Merchant Switch Store tests on iPad Simulator
+
+Install the staging Simulator `.app` on a clean landscape-capable iPad Simulator, then run one independent case:
+
+```bash
+./scripts/ios/run-switch-store.sh --device "<SIMULATOR_UDID>" --platform ipad --test happy-path
+```
+
+Available iPad cases match the iPhone Switch Store suite:
+
+- `happy-path`
+- `switch-store-after-login-requires-merchant-pin`
+- `store-staff-cannot-access-switch-store`
+
+These map to QA-2925, QA-2982, and QA-2983 under QA-1866.
+
+The iPad layer reuses the same behavior and fixtures while handling tablet-specific login accessibility, keyboard dismissal, notification permission, landscape orientation, and icon-only Settings navigation.
 
 ## Run Switch Staff tests on iPhone Simulator
 
