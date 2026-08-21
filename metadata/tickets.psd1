@@ -173,4 +173,18 @@
             Url = 'https://linear.app/letsgoup-tw/issue/QA-2981/qa-automation-role-admin-can-login-via-phone-number-android'
         }
     }
+    staffPhoneLoginIos = @{
+        'role-owner-can-login-with-phone-number' = @{
+            Id  = 'QA-2989'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2989/qa-automation-account-role-phone-number-login-ios'
+        }
+        'role-admin-can-login-with-phone-number' = @{
+            Id  = 'QA-2989'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2989/qa-automation-account-role-phone-number-login-ios'
+        }
+        'role-user-cannot-login-to-app' = @{
+            Id  = 'QA-2989'
+            Url = 'https://linear.app/letsgoup-tw/issue/QA-2989/qa-automation-account-role-phone-number-login-ios'
+        }
+    }
 }

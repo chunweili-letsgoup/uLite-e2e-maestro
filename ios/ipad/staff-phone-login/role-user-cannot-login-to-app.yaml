@@ -1,0 +1,36 @@
+appId: ${APP_ID}
+name: "User Cannot Login to App with Phone Number - iPad"
+tags: [ios, ipad, tablet, authentication, phone-login, negative, authorization]
+---
+- setOrientation: LANDSCAPE_LEFT
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: "(Don.t Allow|不允許)"
+    timeout: 15000
+- tapOn:
+    point: "41%,53%"
+- extendedWaitUntil:
+    visible: "Email or phone number"
+    timeout: 15000
+- tapOn:
+    text: "Email or phone number"
+    waitToSettleTimeoutMs: 300
+- inputText: ${USER_ROLE_PHONE}
+- tapOn:
+    text: "Password"
+    index: 2
+    waitToSettleTimeoutMs: 300
+- inputText: ${USER_ROLE_PASSWORD}
+- pressKey: ENTER
+- tapOn:
+    text: "Login|Log in"
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible: ".*Activation is not allowed.*"
+    timeout: 15000
+    label: "User role is rejected from App login"
+- assertNotVisible:
+    text: "Settings|gearshape.fill"
+    label: "No authenticated App session is created"

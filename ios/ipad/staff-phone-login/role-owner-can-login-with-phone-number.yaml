@@ -1,0 +1,48 @@
+appId: ${APP_ID}
+name: "Owner Can Login with Phone Number - iPad"
+tags: [ios, ipad, tablet, authentication, phone-login, happy-path, authorization]
+---
+- setOrientation: LANDSCAPE_LEFT
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: "(Don.t Allow|不允許)"
+    timeout: 15000
+- tapOn:
+    point: "41%,53%"
+- extendedWaitUntil:
+    visible: "Email or phone number"
+    timeout: 15000
+- tapOn:
+    text: "Email or phone number"
+    waitToSettleTimeoutMs: 300
+- inputText: ${OWNER_ROLE_PHONE}
+- tapOn:
+    text: "Password"
+    index: 2
+    waitToSettleTimeoutMs: 300
+- inputText: ${OWNER_ROLE_PASSWORD}
+- pressKey: ENTER
+- tapOn:
+    text: "Login|Log in"
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible: ${STORE_OWNER}
+    timeout: 15000
+- tapOn: ${STORE_OWNER}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+- tapOn: ${STORE_OWNER_PIN_1}
+- tapOn: ${STORE_OWNER_PIN_2}
+- tapOn: ${STORE_OWNER_PIN_3}
+- tapOn: ${STORE_OWNER_PIN_4}
+- extendedWaitUntil:
+    visible: "Settings|gearshape.fill"
+    timeout: 15000
+- tapOn: "Settings|gearshape.fill"
+- extendedWaitUntil:
+    visible: ${STORE_OWNER}
+    timeout: 15000
+    label: "Owner logged in with phone number"

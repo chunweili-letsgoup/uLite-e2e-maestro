@@ -1,0 +1,47 @@
+appId: ${APP_ID}
+name: "Admin Can Login with Phone Number - iPhone"
+tags: [ios, iphone, authentication, phone-login, happy-path, authorization]
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+    permissions:
+      notifications: deny
+- tapOn:
+    text: "(Don.t Allow|不允許)"
+    optional: true
+- extendedWaitUntil:
+    visible: "Email (address|or phone number)"
+    timeout: 15000
+- tapOn:
+    text: "Email (address|or phone number)"
+    waitToSettleTimeoutMs: 300
+- inputText: ${ADMIN_ROLE_PHONE}
+- tapOn:
+    text: "Password"
+    index: 1
+    waitToSettleTimeoutMs: 300
+- inputText: ${ADMIN_ROLE_PASSWORD}
+- hideKeyboard
+- tapOn:
+    text: "Login|Log in"
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible: ${ADMIN_ROLE_NAME}
+    timeout: 15000
+- tapOn: ${ADMIN_ROLE_NAME}
+- extendedWaitUntil:
+    visible: "Enter passcode"
+    timeout: 15000
+- tapOn: ${ADMIN_ROLE_PIN_1}
+- tapOn: ${ADMIN_ROLE_PIN_2}
+- tapOn: ${ADMIN_ROLE_PIN_3}
+- tapOn: ${ADMIN_ROLE_PIN_4}
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 15000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible: ${ADMIN_ROLE_NAME}
+    timeout: 15000
+    label: "Admin logged in with phone number"

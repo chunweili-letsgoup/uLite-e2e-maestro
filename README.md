@@ -64,6 +64,7 @@ scripts/android/run-switch-staff.ps1
 scripts/android/run-switch-store.ps1
 scripts/android/run-all.ps1      Run every Android suite in one HTML report
 scripts/ios/run-switch-store.sh  Local iPhone Switch Store runner
+scripts/ios/run-staff-phone-login.sh  Local iPhone/iPad phone-login runner
 scripts/ios/run-switch-staff.sh  Local iPhone Switch Staff runner
 ```
 
@@ -160,3 +161,19 @@ The iPad suite implements the same six objectives as iPhone:
 - `relaunch-during-switch`
 
 These map to QA-2932 and QA-2984 through QA-2988 under QA-1866.
+
+## Run Account Role Phone Login tests on iOS
+
+Run one independent role case on iPhone or iPad:
+
+```bash
+./scripts/ios/run-staff-phone-login.sh --device "<SIMULATOR_UDID>" --platform iphone --test role-owner-can-login-with-phone-number
+```
+
+Available cases:
+
+- `role-owner-can-login-with-phone-number`
+- `role-admin-can-login-with-phone-number`
+- `role-user-cannot-login-to-app`
+
+Use `--platform ipad` for iPad. These cases map to QA-2989 under PRO-169.

@@ -1,0 +1,35 @@
+appId: ${APP_ID}
+name: "User Cannot Login to App with Phone Number - iPhone"
+tags: [ios, iphone, authentication, phone-login, negative, authorization]
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+    permissions:
+      notifications: deny
+- tapOn:
+    text: "(Don.t Allow|不允許)"
+    optional: true
+- extendedWaitUntil:
+    visible: "Email (address|or phone number)"
+    timeout: 15000
+- tapOn:
+    text: "Email (address|or phone number)"
+    waitToSettleTimeoutMs: 300
+- inputText: ${USER_ROLE_PHONE}
+- tapOn:
+    text: "Password"
+    index: 1
+    waitToSettleTimeoutMs: 300
+- inputText: ${USER_ROLE_PASSWORD}
+- hideKeyboard
+- tapOn:
+    text: "Login|Log in"
+    waitToSettleTimeoutMs: 500
+- extendedWaitUntil:
+    visible: ".*Activation is not allowed.*"
+    timeout: 15000
+    label: "User role is rejected from App login"
+- assertNotVisible:
+    text: "Settings"
+    label: "No authenticated App session is created"
